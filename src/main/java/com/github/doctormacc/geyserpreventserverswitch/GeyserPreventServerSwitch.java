@@ -1,0 +1,105 @@
+package com.github.doctormacc.geyserpreventserverswitch;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import lombok.Getter;
+import net.md_5.bungee.api.plugin.Plugin;
+import org.geysermc.connector.GeyserConnector;
+import org.geysermc.connector.network.session.GeyserSession;
+import org.geysermc.floodgate.FloodgateAPI;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+
+public final class GeyserPreventServerSwitch extends Plugin {
+
+    @Getter
+    private Config config;
+
+    /**
+     * A list of all prohibited servers, in a List.
+     */
+    @Getter
+    private List<String> prohibitedServers;
+
+    @Override
+    public void onEnable() {
+
+        if (!getDataFolder().exists())
+            getDataFolder().mkdir();
+
+        try {
+            if (!getDataFolder().exists())
+                getDataFolder().mkdir();
+            File configFile = new File(getDataFolder(), "config.yml");
+            if (!configFile.exists()) {
+                configFile.createNewFile();
+                FileOutputStream fos = new FileOutputStream(configFile);
+                InputStream input = GeyserPreventServerSwitch.class.getResourceAsStream("/config.yml"); // resources need leading "/" prefix
+
+                byte[] bytes = new byte[input.available()];
+
+                input.read(bytes);
+
+                for(char c : new String(bytes).toCharArray()) {
+                    fos.write(c);
+                }
+
+                fos.flush();
+                input.close();
+                fos.close();
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+            config = objectMapper.readValue(configFile, Config.class);
+        } catch (IOException ex) {
+            getLogger().log(Level.WARNING, "Failed to read config!", ex);
+            ex.printStackTrace();
+        }
+
+        if (!config.isUseFloodgate() && getProxy().getPluginManager().getPlugin("Geyser-BungeeCord") == null) {
+            getLogger().log(Level.SEVERE, "Geyser-BungeeCord not found! Disabling...");
+            onDisable();
+            return;
+        } else if (config.isUseFloodgate() && getProxy().getPluginManager().getPlugin("floodgate-bungee") == null) {
+            getLogger().log(Level.SEVERE, "Floodgate not found! Disabling...");
+            onDisable();
+            return;
+        }
+
+        prohibitedServers = Arrays.asList(config.getProhibitedServers());
+
+        getProxy().getPluginManager().registerListener(this, new Events(this));
+    }
+
+    @Override
+    public void onDisable() {
+        getProxy().getPluginManager().unregisterListeners(this);
+        config = null;
+        prohibitedServers = null;
+    }
+
+    /**
+     * Determines if a player is from Bedrock
+     * @param uuid the UUID to determine
+     * @return true if the player is from Bedrock
+     */
+    public boolean isBedrockPlayer(UUID uuid) {
+        if (!config.isUseFloodgate()) {
+            for (GeyserSession session : GeyserConnector.getInstance().getPlayers()) {
+                if (session.getPlayerEntity().getUuid().equals(uuid)) {
+                    return true;
+                }
+            }
+        } else {
+            return FloodgateAPI.isBedrockPlayer(uuid);
+        }
+        return false;
+    }
+}
