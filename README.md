@@ -14,3 +14,5 @@ message: "You are not allowed to join that server! :("
 # Use Geyser for checking players or Floodgate? (Keep as default unless Geyser is not on your server)
 use-floodgate: false
 ```
+
+Discord server: https://discord.gg/jNNC4CZtsN
