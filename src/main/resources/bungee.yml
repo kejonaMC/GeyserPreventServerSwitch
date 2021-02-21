@@ -1,6 +1,6 @@
 name: GeyserPreventServerSwitch
 version: ${project.version}
-main: com.github.doctormacc.geyserpreventserverswitch.GeyserPreventServerSwitch
+main: com.github.camotoy.geyserpreventserverswitch.GeyserPreventServerSwitch
 author: Camotoy
 description: Prevent Geyser/Floodgate players from connecting to specific subservers.
 softdepends:

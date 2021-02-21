@@ -1,11 +1,9 @@
-package com.github.doctormacc.geyserpreventserverswitch;
+package com.github.camotoy.geyserpreventserverswitch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.geysermc.connector.GeyserConnector;
-import org.geysermc.connector.network.session.GeyserSession;
 import org.geysermc.floodgate.FloodgateAPI;
 
 import java.io.File;
@@ -19,13 +17,11 @@ import java.util.logging.Level;
 
 public final class GeyserPreventServerSwitch extends Plugin {
 
-    @Getter
     private Config config;
 
     /**
      * A list of all prohibited servers, in a List.
      */
-    @Getter
     private List<String> prohibitedServers;
 
     @Override
@@ -92,14 +88,17 @@ public final class GeyserPreventServerSwitch extends Plugin {
      */
     public boolean isBedrockPlayer(UUID uuid) {
         if (!config.isUseFloodgate()) {
-            for (GeyserSession session : GeyserConnector.getInstance().getPlayers()) {
-                if (session.getPlayerEntity().getUuid().equals(uuid)) {
-                    return true;
-                }
-            }
+            return GeyserConnector.getInstance().getPlayerByUuid(uuid) != null;
         } else {
             return FloodgateAPI.isBedrockPlayer(uuid);
         }
-        return false;
+    }
+
+    public Config getConfig() {
+        return this.config;
+    }
+
+    public List<String> getProhibitedServers() {
+        return this.prohibitedServers;
     }
 }
