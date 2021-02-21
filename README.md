@@ -15,4 +15,6 @@ message: "You are not allowed to join that server! :("
 use-floodgate: false
 ```
 
+Any player with the permission `geyserpreventserverswitch.server.bypass` will not be blocked from joining a server.
+
 Discord server: https://discord.gg/jNNC4CZtsN
