@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.geysermc.connector.GeyserConnector;
-import org.geysermc.floodgate.FloodgateAPI;
+import org.geysermc.floodgate.api.FloodgateApi;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -63,7 +63,7 @@ public final class GeyserPreventServerSwitch extends Plugin {
             getLogger().log(Level.SEVERE, "Geyser-BungeeCord not found! Disabling...");
             onDisable();
             return;
-        } else if (config.isUseFloodgate() && getProxy().getPluginManager().getPlugin("floodgate-bungee") == null) {
+        } else if (config.isUseFloodgate() && getProxy().getPluginManager().getPlugin("floodgate") == null) {
             getLogger().log(Level.SEVERE, "Floodgate not found! Disabling...");
             onDisable();
             return;
@@ -90,7 +90,7 @@ public final class GeyserPreventServerSwitch extends Plugin {
         if (!config.isUseFloodgate()) {
             return GeyserConnector.getInstance().getPlayerByUuid(uuid) != null;
         } else {
-            return FloodgateAPI.isBedrockPlayer(uuid);
+            return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
         }
     }
 
