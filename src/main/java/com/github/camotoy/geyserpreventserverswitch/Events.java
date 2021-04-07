@@ -16,7 +16,7 @@ public class Events implements Listener {
     @EventHandler
     public void onServerConnect(ServerConnectEvent event) {
         if (plugin.getProhibitedServers().contains(event.getTarget().getName())) {
-            if (event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass")) {
+            if (event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass") || event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass." + event.getTarget().getName())) {
                 return;
             }
             if (plugin.isBedrockPlayer(event.getPlayer().getUniqueId())) {
