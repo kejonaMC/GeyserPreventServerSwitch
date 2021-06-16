@@ -1,18 +1,18 @@
 package com.github.camotoy.geyserpreventserverswitch.bungeecord;
 
-import com.github.camotoy.geyserpreventserverswitch.common.PreventServerSwitch;
+import com.github.camotoy.geyserpreventserverswitch.common.DataHandler;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.logging.Level;
 
-public final class BungeeCordPlugin extends Plugin {
+public final class BungeeCordPreventServerSwitch extends Plugin {
 
-    private PreventServerSwitch preventer;
+    private DataHandler preventer;
 
     @Override
     public void onEnable() {
 
-        this.preventer = new PreventServerSwitch(getDataFolder());
+        this.preventer = new DataHandler(getDataFolder());
 
         if (!preventer.getConfig().isUseFloodgate() && getProxy().getPluginManager().getPlugin("Geyser-BungeeCord") == null) {
             getLogger().log(Level.SEVERE, "Geyser-BungeeCord not found! Disabling...");
@@ -33,7 +33,7 @@ public final class BungeeCordPlugin extends Plugin {
         preventer.disable();
     }
 
-    public PreventServerSwitch getPreventer() {
+    public DataHandler getPreventer() {
         return this.preventer;
     }
 }

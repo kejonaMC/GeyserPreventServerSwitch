@@ -1,6 +1,6 @@
 package com.github.camotoy.geyserpreventserverswitch.velocity;
 
-import com.github.camotoy.geyserpreventserverswitch.common.PreventServerSwitch;
+import com.github.camotoy.geyserpreventserverswitch.common.DataHandler;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -20,10 +20,10 @@ import java.nio.file.Path;
         url = "https://github.com/Camotoy/GeyserPreventServerSwitch",
         authors = {"Camotoy"},
         dependencies = {@Dependency(id = "geyser", optional = true), @Dependency(id = "floodgate", optional = true)})
-public class VelocityPlugin {
+public class VelocityPreventServerSwitch {
 
     @Inject
-    private ProxyServer server;
+    private ProxyServer proxyServer;
 
     @Inject
     private Logger logger;
@@ -32,24 +32,36 @@ public class VelocityPlugin {
     @DataDirectory
     private Path dataDirectory;
 
-    private PreventServerSwitch preventer;
+    private DataHandler preventer;
 
     @Subscribe
     public void onProxyInitialize(ProxyInitializeEvent event) {
 
-        this.preventer = new PreventServerSwitch(dataDirectory.toFile());
+        this.preventer = new DataHandler(dataDirectory.toFile());
 
-        // todo: make sure at least one of geyser and floodgate are running
+        if (!preventer.getConfig().isUseFloodgate() && !proxyServer.getPluginManager().isLoaded("geyser")) {
+            logger.error("Geyser-BungeeCord not found! Disabling...");
+            shutdown();
+            return;
+        } else if (preventer.getConfig().isUseFloodgate() && !proxyServer.getPluginManager().isLoaded("floodgate")) {
+            logger.error("Floodgate not found! Disabling...");
+            shutdown();
+            return;
+        }
 
         // todo: event logic
     }
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event) {
+        shutdown();
+    }
+
+    public void shutdown() {
         preventer.disable();
     }
 
-    public PreventServerSwitch getPreventer() {
+    public DataHandler getPreventer() {
         return this.preventer;
     }
 }

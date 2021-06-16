@@ -9,9 +9,9 @@ import net.md_5.bungee.event.EventHandler;
 
 public class Events implements Listener {
 
-    private final BungeeCordPlugin plugin;
+    private final BungeeCordPreventServerSwitch plugin;
 
-    public Events(BungeeCordPlugin plugin) {
+    public Events(BungeeCordPreventServerSwitch plugin) {
         this.plugin = plugin;
     }
 

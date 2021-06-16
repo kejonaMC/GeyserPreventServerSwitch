@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-public class PreventServerSwitch {
+public class DataHandler {
 
     private Config config;
 
@@ -19,7 +19,7 @@ public class PreventServerSwitch {
      */
     private List<String> prohibitedServers;
 
-    public PreventServerSwitch(File dataFolder) {
+    public DataHandler(File dataFolder) {
 
         // Load the config
         try {
