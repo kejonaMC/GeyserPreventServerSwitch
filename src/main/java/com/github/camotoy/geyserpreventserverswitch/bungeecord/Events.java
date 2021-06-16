@@ -1,5 +1,7 @@
-package com.github.camotoy.geyserpreventserverswitch;
+package com.github.camotoy.geyserpreventserverswitch.bungeecord;
 
+import com.github.camotoy.geyserpreventserverswitch.common.Config;
+import com.github.camotoy.geyserpreventserverswitch.common.Utils;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -7,21 +9,23 @@ import net.md_5.bungee.event.EventHandler;
 
 public class Events implements Listener {
 
-    private final GeyserPreventServerSwitch plugin;
+    private final BungeeCordPlugin plugin;
 
-    public Events(GeyserPreventServerSwitch plugin) {
+    public Events(BungeeCordPlugin plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
     public void onServerConnect(ServerConnectEvent event) {
-        if (plugin.getProhibitedServers().contains(event.getTarget().getName())) {
+        if (plugin.getPreventer().getProhibitedServers().contains(event.getTarget().getName())) {
             if (event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass") || event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass." + event.getTarget().getName())) {
                 return;
             }
-            if (plugin.isBedrockPlayer(event.getPlayer().getUniqueId())) {
-                if (plugin.getConfig().getMessage() != null && !plugin.getConfig().getMessage().equals("")) {
-                    event.getPlayer().sendMessage(new TextComponent(plugin.getConfig().getMessage()));
+            Config config = plugin.getPreventer().getConfig();
+            if (Utils.isBedrockPlayer(event.getPlayer().getUniqueId(), config)) {
+                // Send the message if available
+                if (config.getMessage() != null && !config.getMessage().equals("")) {
+                    event.getPlayer().sendMessage(new TextComponent(config.getMessage()));
                 }
                 if (event.getPlayer().getServer() == null) {
                     // Go to the first fallback server.
