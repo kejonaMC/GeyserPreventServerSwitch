@@ -17,26 +17,28 @@ public class Events implements Listener {
 
     @EventHandler
     public void onServerConnect(ServerConnectEvent event) {
+        Config config = plugin.getPreventer().getConfig();
+        if (!Utils.isBedrockPlayer(event.getPlayer().getUniqueId(), config)) {
+            return;
+        }
+
         if (plugin.getPreventer().getProhibitedServers().contains(event.getTarget().getName())) {
             if (event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass") || event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass." + event.getTarget().getName())) {
                 return;
             }
-            Config config = plugin.getPreventer().getConfig();
-            if (Utils.isBedrockPlayer(event.getPlayer().getUniqueId(), config)) {
-                // Send the message if available
-                if (config.getMessage() != null && !config.getMessage().equals("")) {
-                    event.getPlayer().sendMessage(new TextComponent(config.getMessage()));
+
+            // Send the message if available
+            if (config.getMessage() != null && !config.getMessage().equals("")) {
+                event.getPlayer().sendMessage(new TextComponent(config.getMessage()));
+            }
+            if (event.getPlayer().getServer() == null) {
+                // Go to the first fallback server.
+                if (!event.getPlayer().getPendingConnection().getListener().getServerPriority().isEmpty()) {
+                    event.setTarget(plugin.getProxy().getServers().get(event.getPlayer().getPendingConnection().getListener().getServerPriority().get(0)));
                 }
-                if (event.getPlayer().getServer() == null) {
-                    // Go to the first fallback server.
-                    if (!event.getPlayer().getPendingConnection().getListener().getServerPriority().isEmpty()) {
-                        event.setTarget(plugin.getProxy().getServers().get(event.getPlayer().getPendingConnection().getListener().getServerPriority().get(0)));
-                    }
-                } else {
-                    event.setCancelled(true);
-                }
+            } else {
+                event.setCancelled(true);
             }
         }
     }
-
 }
