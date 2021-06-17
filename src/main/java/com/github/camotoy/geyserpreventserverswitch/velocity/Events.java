@@ -28,13 +28,13 @@ public class Events {
     public void onServerPreConnectEvent(ServerPreConnectEvent event) {
         Player player = event.getPlayer();
 
-        Config config = plugin.getPreventer().getConfig();
-        if (!Utils.isBedrockPlayer(player.getUniqueId(), config)) {
+        Config config = plugin.getDataHandler().getConfig();
+        if (!Utils.isBedrockPlayer(player.getUniqueId(), plugin.getDataHandler().isUseFloodgate)) {
             return;
         }
 
         RegisteredServer target = event.getOriginalServer(); // the original target server, not the source server.
-        if (plugin.getPreventer().getProhibitedServers().contains(target.getServerInfo().getName())) {
+        if (plugin.getDataHandler().getProhibitedServers().contains(target.getServerInfo().getName())) {
             if (player.hasPermission("geyserpreventserverswitch.server.bypass") || player.hasPermission("geyserpreventserverswitch.server.bypass." + target.getServerInfo().getName())) {
                 return;
             }
@@ -49,7 +49,8 @@ public class Events {
             }
 
             if (source == null) {
-                // This is their first time joining - Go to the first fallback server.
+                // This is their first time joining
+                // Try and find an available server in the connection priority list - no reason to iterate through the actual server list because velocity doesn't with java players
                 List<String> serverConnectOrder = proxyServer.getConfiguration().getAttemptConnectionOrder();
                 if (!serverConnectOrder.isEmpty()) {
                     for (String possibleTargetName : serverConnectOrder) {
@@ -59,16 +60,17 @@ public class Events {
                         }
                         RegisteredServer possibleTarget = proxyServer.getServer(possibleTargetName).get();
 
-                        if (!plugin.getPreventer().getProhibitedServers().contains(possibleTargetName) || player.hasPermission("geyserpreventserverswitch.server.bypass." + possibleTargetName)) {
+                        if (!plugin.getDataHandler().getProhibitedServers().contains(possibleTargetName) || player.hasPermission("geyserpreventserverswitch.server.bypass." + possibleTargetName)) {
                             event.setResult(ServerPreConnectEvent.ServerResult.allowed(possibleTarget));
                             return;
                         }
                     }
+
                     player.disconnect(Component.text("Sorry, there are no servers available to you!"));
                 } else {
-                    // Velocity doesn't seem to define the priorities in the config (at least not in a standalone section), so the priority list should realistically never be empty.
-                    event.setResult(ServerPreConnectEvent.ServerResult.denied());
-                    throw new IllegalStateException("Failed to get the server priority list!");
+                    // Velocity injects 'lobby' into the order list if the user defines it empty
+                    // Any servers in the order list must be listed in the server list - So, this should never happen.
+                    throw new IllegalStateException("Server connection priority list was empty!");
                 }
             } else {
                 // The player is already on a server

@@ -19,7 +19,10 @@ public class DataHandler {
      */
     private List<String> prohibitedServers;
 
-    public DataHandler(File dataFolder) {
+    public final boolean isUseFloodgate;
+
+    public DataHandler(File dataFolder, boolean isUseFloodgate) {
+        this.isUseFloodgate = isUseFloodgate;
 
         // Load the config
         try {

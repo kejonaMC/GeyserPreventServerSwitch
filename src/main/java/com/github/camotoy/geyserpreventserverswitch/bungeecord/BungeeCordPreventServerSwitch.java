@@ -7,22 +7,23 @@ import java.util.logging.Level;
 
 public final class BungeeCordPreventServerSwitch extends Plugin {
 
-    private DataHandler preventer;
+    private DataHandler dataHandler;
 
     @Override
     public void onEnable() {
 
-        this.preventer = new DataHandler(getDataFolder());
-
-        if (!preventer.getConfig().isUseFloodgate() && getProxy().getPluginManager().getPlugin("Geyser-BungeeCord") == null) {
-            getLogger().log(Level.SEVERE, "Geyser-BungeeCord not found! Disabling...");
-            onDisable();
-            return;
-        } else if (preventer.getConfig().isUseFloodgate() && getProxy().getPluginManager().getPlugin("floodgate") == null) {
-            getLogger().log(Level.SEVERE, "Floodgate not found! Disabling...");
+        boolean useFloodgate;
+        if (getProxy().getPluginManager().getPlugin("floodgate") != null) {
+            useFloodgate = true;
+        } else if (getProxy().getPluginManager().getPlugin("Geyser-BungeeCord") != null) {
+            useFloodgate = false;
+        } else {
+            getLogger().log(Level.SEVERE, "Floodgate or Geyser not found! Disabling...");
             onDisable();
             return;
         }
+
+        this.dataHandler = new DataHandler(getDataFolder(), useFloodgate);
 
         getProxy().getPluginManager().registerListener(this, new Events(this));
     }
@@ -30,10 +31,11 @@ public final class BungeeCordPreventServerSwitch extends Plugin {
     @Override
     public void onDisable() {
         getProxy().getPluginManager().unregisterListeners(this);
-        preventer.disable();
+        dataHandler.disable();
+        dataHandler = null;
     }
 
-    public DataHandler getPreventer() {
-        return this.preventer;
+    public DataHandler getDataHandler() {
+        return this.dataHandler;
     }
 }

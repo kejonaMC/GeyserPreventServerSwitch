@@ -17,12 +17,12 @@ public class Events implements Listener {
 
     @EventHandler
     public void onServerConnect(ServerConnectEvent event) {
-        Config config = plugin.getPreventer().getConfig();
-        if (!Utils.isBedrockPlayer(event.getPlayer().getUniqueId(), config)) {
+        Config config = plugin.getDataHandler().getConfig();
+        if (!Utils.isBedrockPlayer(event.getPlayer().getUniqueId(), plugin.getDataHandler().isUseFloodgate)) {
             return;
         }
 
-        if (plugin.getPreventer().getProhibitedServers().contains(event.getTarget().getName())) {
+        if (plugin.getDataHandler().getProhibitedServers().contains(event.getTarget().getName())) {
             if (event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass") || event.getPlayer().hasPermission("geyserpreventserverswitch.server.bypass." + event.getTarget().getName())) {
                 return;
             }

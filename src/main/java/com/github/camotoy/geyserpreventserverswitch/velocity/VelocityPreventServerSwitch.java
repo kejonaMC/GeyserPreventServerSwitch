@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 
 import java.nio.file.Path;
 
-@Plugin(id = "GeyserPreventServerSwitch",
+@Plugin(id = "geyserpreventserverswitch",
         name = "GeyserPreventServerSwitch",
         version = "1.2-SNAPSHOT",
         description = "Prevent Geyser/Floodgate players from connecting to specific subservers.",
@@ -32,22 +32,23 @@ public class VelocityPreventServerSwitch {
     @DataDirectory
     private Path dataDirectory;
 
-    private DataHandler preventer;
+    private DataHandler dataHandler;
 
     @Subscribe
     public void onProxyInitialize(ProxyInitializeEvent event) {
 
-        this.preventer = new DataHandler(dataDirectory.toFile());
-
-        if (!preventer.getConfig().isUseFloodgate() && !proxyServer.getPluginManager().isLoaded("geyser")) {
-            logger.error("Geyser-BungeeCord not found! Disabling...");
-            shutdown();
-            return;
-        } else if (preventer.getConfig().isUseFloodgate() && !proxyServer.getPluginManager().isLoaded("floodgate")) {
-            logger.error("Floodgate not found! Disabling...");
+        boolean useFloodgate;
+        if (proxyServer.getPluginManager().isLoaded("floodgate")) {
+            useFloodgate = true;
+        } else if (proxyServer.getPluginManager().isLoaded("geyser")) {
+            useFloodgate = false;
+        } else {
+            logger.error("Floodgate or Geyser not found! Disabling...");
             shutdown();
             return;
         }
+
+        this.dataHandler = new DataHandler(dataDirectory.toFile(), useFloodgate);
 
         proxyServer.getEventManager().register(this, new Events(this, logger, proxyServer));
     }
@@ -58,10 +59,11 @@ public class VelocityPreventServerSwitch {
     }
 
     public void shutdown() {
-        preventer.disable();
+        dataHandler.disable();
+        dataHandler = null;
     }
 
-    public DataHandler getPreventer() {
-        return this.preventer;
+    public DataHandler getDataHandler() {
+        return this.dataHandler;
     }
 }
