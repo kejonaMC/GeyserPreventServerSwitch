@@ -49,7 +49,7 @@ public class VelocityPreventServerSwitch {
             return;
         }
 
-        // todo: event logic
+        proxyServer.getEventManager().register(this, new Events(this, logger, proxyServer));
     }
 
     @Subscribe
