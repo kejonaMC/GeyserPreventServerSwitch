@@ -65,7 +65,7 @@ public class Events {
                             return;
                         }
                     }
-
+                    event.setResult(ServerPreConnectEvent.ServerResult.denied());
                     player.disconnect(Component.text("Sorry, there are no servers available to you!"));
                 } else {
                     // Velocity injects 'lobby' into the order list if the user defines it empty
