@@ -26,6 +26,7 @@ public final class BungeeCordPreventServerSwitch extends Plugin {
         this.dataHandler = new DataHandler(getDataFolder(), useFloodgate);
 
         getProxy().getPluginManager().registerListener(this, new Events(this));
+        getProxy().getPluginManager().registerCommand(this, new ReloadCommand(this));
     }
 
     @Override

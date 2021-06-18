@@ -15,7 +15,7 @@ public class Events implements Listener {
 
     private final BungeeCordPreventServerSwitch plugin;
 
-    public Events(BungeeCordPreventServerSwitch plugin) {
+    protected Events(BungeeCordPreventServerSwitch plugin) {
         this.plugin = plugin;
     }
 

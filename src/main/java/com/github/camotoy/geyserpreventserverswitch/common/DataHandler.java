@@ -12,6 +12,9 @@ import java.util.List;
 
 public class DataHandler {
 
+    private final File dataFolder;
+    public final boolean isUseFloodgate;
+
     private Config config;
 
     /**
@@ -19,12 +22,15 @@ public class DataHandler {
      */
     private List<String> prohibitedServers;
 
-    public final boolean isUseFloodgate;
 
     public DataHandler(File dataFolder, boolean isUseFloodgate) {
+        this.dataFolder = dataFolder;
         this.isUseFloodgate = isUseFloodgate;
 
-        // Load the config
+        loadConfig();
+    }
+
+    public boolean loadConfig() {
         try {
             if (!dataFolder.exists()) {
                 dataFolder.mkdir();
@@ -53,10 +59,13 @@ public class DataHandler {
         } catch (IOException ex) {
             System.out.println("[GeyserPreventServerSwitch] Failed to read config!");
             ex.printStackTrace();
+            return false;
         }
 
         // Get all the prohibited servers
         prohibitedServers = Arrays.asList(config.getProhibitedServers());
+
+        return true;
     }
 
     public Config getConfig() {

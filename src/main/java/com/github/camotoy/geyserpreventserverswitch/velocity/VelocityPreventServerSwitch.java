@@ -51,6 +51,7 @@ public class VelocityPreventServerSwitch {
         this.dataHandler = new DataHandler(dataDirectory.toFile(), useFloodgate);
 
         proxyServer.getEventManager().register(this, new Events(this, logger, proxyServer));
+        proxyServer.getCommandManager().register("pssreload", new ReloadCommand(this, logger));
     }
 
     @Subscribe

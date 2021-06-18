@@ -18,7 +18,7 @@ public class Events {
     private final Logger logger;
     private final ProxyServer proxyServer;
 
-    public Events(VelocityPreventServerSwitch plugin, Logger logger, ProxyServer proxyServer) {
+    protected Events(VelocityPreventServerSwitch plugin, Logger logger, ProxyServer proxyServer) {
         this.plugin = plugin;
         this.logger = logger;
         this.proxyServer = proxyServer;
