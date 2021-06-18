@@ -3,6 +3,7 @@ package com.github.camotoy.geyserpreventserverswitch.common;
 import org.geysermc.connector.GeyserConnector;
 import org.geysermc.floodgate.api.FloodgateApi;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Utils {
@@ -17,10 +18,7 @@ public class Utils {
         if (useFloodgate) {
             return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
         } else {
-            if (GeyserConnector.getInstance() == null) {
-                throw new NullPointerException("Connector instance returned null!");
-            }
-            return GeyserConnector.getInstance().getPlayerByUuid(uuid) != null;
+            return Objects.requireNonNull(GeyserConnector.getInstance()).getPlayerByUuid(uuid) != null;
         }
     }
 }
