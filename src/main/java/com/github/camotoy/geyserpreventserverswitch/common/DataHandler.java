@@ -14,7 +14,6 @@ public class DataHandler {
 
     private final File dataFolder;
     public final boolean isUseFloodgate;
-
     private Config config;
 
     /**
