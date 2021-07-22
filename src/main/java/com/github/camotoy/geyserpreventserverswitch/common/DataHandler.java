@@ -21,7 +21,6 @@ public class DataHandler {
      */
     private List<String> prohibitedServers;
 
-
     public DataHandler(File dataFolder, boolean isUseFloodgate) {
         this.dataFolder = dataFolder;
         this.isUseFloodgate = isUseFloodgate;
