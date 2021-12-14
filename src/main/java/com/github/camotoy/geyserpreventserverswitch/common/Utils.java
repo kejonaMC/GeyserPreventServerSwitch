@@ -1,7 +1,7 @@
 package com.github.camotoy.geyserpreventserverswitch.common;
 
-import org.geysermc.connector.GeyserConnector;
 import org.geysermc.floodgate.api.FloodgateApi;
+import org.geysermc.geyser.GeyserImpl;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,7 +18,7 @@ public class Utils {
         if (useFloodgate) {
             return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
         } else {
-            return Objects.requireNonNull(GeyserConnector.getInstance()).getPlayerByUuid(uuid) != null;
+            return Objects.requireNonNull(GeyserImpl.getInstance()).connectionByUuid(uuid) != null;
         }
     }
 }
