@@ -15,7 +15,7 @@ import java.nio.file.Path;
 
 @Plugin(id = "geyserpreventserverswitch",
         name = "GeyserPreventServerSwitch",
-        version = "1.3-SNAPSHOT",
+        version = "1.2-SNAPSHOT",
         description = "Prevent Geyser/Floodgate players from connecting to specific subservers.",
         url = "https://github.com/Camotoy/GeyserPreventServerSwitch",
         authors = {"Camotoy"},
