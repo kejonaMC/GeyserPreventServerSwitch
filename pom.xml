@@ -6,7 +6,7 @@
 
     <groupId>com.github.camotoy</groupId>
     <artifactId>GeyserPreventServerSwitch</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>GeyserPreventServerSwitch</name>
