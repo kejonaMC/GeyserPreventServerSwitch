@@ -3,8 +3,8 @@ package com.github.camotoy.geyserpreventserverswitch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.geysermc.connector.GeyserConnector;
 import org.geysermc.floodgate.api.FloodgateApi;
+import org.geysermc.geyser.GeyserImpl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -88,7 +88,7 @@ public final class GeyserPreventServerSwitch extends Plugin {
      */
     public boolean isBedrockPlayer(UUID uuid) {
         if (!config.isUseFloodgate()) {
-            return GeyserConnector.getInstance().getPlayerByUuid(uuid) != null;
+            return GeyserImpl.getInstance().connectionByUuid(uuid) != null;
         } else {
             return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
         }
