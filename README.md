@@ -1,3 +1,5 @@
+[![Discord](https://img.shields.io/discord/853331530004299807?color=7289da&label=discord&logo=discord&logoColor=white)](https://discord.gg/M2SvqCu4e9)
+
 # GeyserPreventServerSwitch
 Prevent Bedrock players from joining specific subservers on a proxy
 
@@ -17,5 +19,3 @@ use-floodgate: false
 
 Any player with the permission `geyserpreventserverswitch.server.bypass` will not be blocked from joining any server.  
 Additionally, any player with the permision `geyserpreventserverswitch.server.bypass.<servername>` will not be blocked from joining the specified server. 
-
-Discord server: https://discord.gg/jNNC4CZtsN
