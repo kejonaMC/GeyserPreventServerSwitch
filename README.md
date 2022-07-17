@@ -12,9 +12,6 @@ prohibited-servers:
 
 # Message to send to players when a server connection is cancelled. Set blank or comment out to disable
 message: "You are not allowed to join that server! :("
-
-# Use Geyser for checking players or Floodgate? (Keep as default unless Geyser is not on your server)
-use-floodgate: false
 ```
 
 Any player with the permission `geyserpreventserverswitch.server.bypass` will not be blocked from joining any server.  
