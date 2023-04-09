@@ -1,9 +1,8 @@
 package com.github.camotoy.geyserpreventserverswitch.common;
 
 import org.geysermc.floodgate.api.FloodgateApi;
-import org.geysermc.geyser.GeyserImpl;
+import org.geysermc.geyser.api.GeyserApi;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class Utils {
@@ -18,7 +17,7 @@ public class Utils {
         if (useFloodgate) {
             return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
         } else {
-            return Objects.requireNonNull(GeyserImpl.getInstance()).connectionByUuid(uuid) != null;
+            return GeyserApi.api().isBedrockPlayer(uuid);
         }
     }
 }
