@@ -10,7 +10,8 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
+    mavenCentral()
+
     maven {
         url = uri("https://oss.sonatype.org/content/repositories/snapshots")
     }
@@ -20,27 +21,28 @@ repositories {
     }
 
     maven {
-        url = uri("https://repo.opencollab.dev/maven-snapshots/")
+        url = uri("https://repo.maven.apache.org/maven2/")
     }
 
     maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
+        url = uri("https://repo.opencollab.dev/maven-snapshots/")
     }
 }
 
 dependencies {
-    api("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2")
     compileOnly("net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
     compileOnly("com.velocitypowered:velocity-api:3.1.1")
+    annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
     compileOnly("org.geysermc.geyser:core:2.1.0-20221211.182157-60")
     compileOnly("org.geysermc.floodgate:api:2.2.0-SNAPSHOT")
 }
 
 group = "com.github.camotoy"
-version = "1.2"
+version = "1.3"
 description = "GeyserPreventServerSwitch"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_16
 
 publishing {
     publications.create<MavenPublication>("maven") {
