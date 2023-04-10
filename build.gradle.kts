@@ -7,6 +7,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    id("com.github.johnrengelman.shadow")
 }
 
 group = "com.github.camotoy"
@@ -25,14 +26,12 @@ repositories {
 
 dependencies {
     // common
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2")
+    api("com.fasterxml.jackson.core", "jackson-databind", "2.12.4")
+    api("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", "2.12.4")
     compileOnly("org.geysermc.api:geyser-api:1.0.1-SNAPSHOT")
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
-
     // bungeecord
     compileOnly("net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
-
     // velocity
     annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
     compileOnly("com.velocitypowered:velocity-api:3.1.1")
@@ -42,6 +41,10 @@ publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
     }
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveFileName.set("GeyserPreventServerSwitch.jar")
 }
 
 tasks.withType<JavaCompile>() {
