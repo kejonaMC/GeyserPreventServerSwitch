@@ -1,5 +1,5 @@
 name: GeyserPreventServerSwitch
-version: ${project.version}
+version: 1.3
 main: com.github.camotoy.geyserpreventserverswitch.bungeecord.BungeeCordPreventServerSwitch
 author: Camotoy
 description: Prevent Geyser/Floodgate players from connecting to specific subservers.
