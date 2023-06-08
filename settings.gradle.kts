@@ -11,6 +11,6 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id("com.github.johnrengelman.shadow") version "7.1.0" // shadowing dependencies
+        id("com.github.johnrengelman.shadow") version "8.1.1" // shadowing dependencies
     }
 }
