@@ -9,15 +9,18 @@ plugins {
 group = "com.github.camotoy"
 version = "1.4"
 description = "GeyserPreventServerSwitch"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
 
     maven("https://oss.sonatype.org/content/repositories/snapshots")
-    maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://repo.maven.apache.org/maven2/")
     maven("https://repo.opencollab.dev/main/")
+    maven {
+        name = "papermc"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
 }
 
 dependencies {
@@ -36,8 +39,8 @@ dependencies {
     compileOnly("net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
 
     // velocity
-    annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
-    compileOnly("com.velocitypowered:velocity-api:3.1.1")
+    compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
 }
 
 publishing {
